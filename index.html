@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>weather app</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://kit.fontawesome.com/3670d7fd05.js" crossorigin="anonymous"></script>
+</head>
+
+<body class="bg-[url('./9ca0104c-f6f4-48d7-bcd2-a550a30bc130.jpg')] w-screen h-screen">
+    <div class="max-w-[500px] mx-auto mt-[100px]  min-h-0  ">
+        <div class="border-4 border-black  w-full bg-gray-300 flex items-center rounded-md">
+            <input style="text-transform: capitalize;" class=" w-[90%] bg-gray-300  p-4 text-center text-xl font-bold border-none outline-none rounded-md "
+                type="text">
+            <i class="fa-solid fa-magnifying-glass text-2xl "></i>
+        </div>
+        <div class="flex flex-col items-center mt-4 border-8 border-black bg-gray-300 rounded-xl">
+
+            <h1 class="font-semibold text-2xl text-indigo-700 ">city</h1>
+
+            <h1 class=" mx-auto  font-semibold text-black  ">
+                <span id="hours">00</span>
+                <span>:</span>
+                <span id="minuts">00</span>
+                <span>:</span>
+                <span id="seconds">00</span>
+
+                <span id="session"></span>
+
+            </h1>
+
+
+            <h1 class="font-semibold text-xl ">date/day</h1>
+            <h1 class="text-4xl font-[900] text-red-500 brightness-100">temp</h1>
+            <h1 class="text-xl font-bold text-blue-500">min/max</h1>
+            <h1 class="text-2xl font-bold text-green-500">weather</h1>
+
+        </div>
+
+    </div>
+    <script>
+        var icon = document.querySelector(`i`)
+
+        var inp = document.querySelector(`input`)
+        var city = document.querySelectorAll(`h1`)[0]
+        var time = document.querySelectorAll(`h1`)[1]
+
+        var myday = document.querySelectorAll(`h1`)[2]
+        var temp = document.querySelectorAll(`h1`)[3]
+        var minMax = document.querySelectorAll(`h1`)[4]
+        var weather = document.querySelectorAll(`h1`)[5]
+
+
+
+        function mydays() {
+            var days = [`sunday`, `Monday`, `tuesday`, `wednesday`, `thursday`, `friday`, `saturday`,]
+
+            var mydate = new Date()
+            var day = mydate.getDay()
+            var date1 = mydate.getDate()
+            var year = mydate.getFullYear()
+            var months = mydate.getMonth()
+
+            myday.innerHTML = `<p>${days[day]} ${date1}/${months}/${year} </p>`
+
+        }
+
+        function clock() {
+            var date = new Date()
+            var hour = date.getHours()
+            var min = date.getMinutes()
+            var sec = date.getSeconds()
+
+
+            if (hour >= 12) {
+                session.innerHTML = `PM`
+                hour = hour - 12
+            }
+            else {
+                session.innerHTML = `AM`
+            }
+
+            if (hour < 10) {
+                hour = '0' + hour
+            }
+            if (sec < 10) {
+                sec = `0` + sec
+            }
+            if (min < 10) {
+                min = `0` + min
+            }
+            hours.innerHTML = hour
+            minuts.innerHTML = min
+            seconds.innerHTML = sec
+        }
+
+        var b = document.querySelector(`body`)
+
+
+
+
+
+
+        icon.addEventListener(`click`, () => {
+            fetch(`https://api.openweathermap.org/data/2.5/weather?q=${inp.value}&units=metric&appid=a7cffca7c299e275d56fc2be97f4ad8b`).then(res => res.json()).then(data => mydata(data))
+            function mydata(data) {
+                console.log(data);
+                clock()
+                mydays()
+
+                city.innerText = data.name
+
+                temp.innerHTML = `<p>${data.main.temp} C <sup>o</sup></p>`
+                minMax.innerHTML = `<p>Min(${data.main.temp_min} C <sup>o</sup>)/Max(${data.main.temp_max} C <sup>o</sup>)</p>`
+                weather.innerText = data.weather[0].main
+                // console.log(data.weather[0].main);
+
+                var s = `Haze`
+
+                if (data.weather[0].main == s) {
+                
+                    
+                    
+                    b.setAttribute(`class`, `bg-[url(./cloudy.jpg)]`)
+
+
+                    
+
+                }
+
+            }
+
+
+        })
+
+    </script>
+
+</body>
+
+</html>
