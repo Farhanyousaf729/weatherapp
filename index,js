@@ -1,0 +1,93 @@
+ var icon = document.querySelector(`i`)
+
+        var inp = document.querySelector(`input`)
+        var city = document.querySelectorAll(`h1`)[0]
+        var time = document.querySelectorAll(`h1`)[1]
+
+        var myday = document.querySelectorAll(`h1`)[2]
+        var temp = document.querySelectorAll(`h1`)[3]
+        var minMax = document.querySelectorAll(`h1`)[4]
+        var weather = document.querySelectorAll(`h1`)[5]
+
+
+
+        function mydays() {
+            var days = [`sunday`, `Monday`, `tuesday`, `wednesday`, `thursday`, `friday`, `saturday`,]
+
+            var mydate = new Date()
+            var day = mydate.getDay()
+            var date1 = mydate.getDate()
+            var year = mydate.getFullYear()
+            var months = mydate.getMonth()
+
+            myday.innerHTML = `<p>${days[day]} ${date1}/${months}/${year} </p>`
+
+        }
+
+        function clock() {
+            var date = new Date()
+            var hour = date.getHours()
+            var min = date.getMinutes()
+            var sec = date.getSeconds()
+
+
+            if (hour >= 12) {
+                session.innerHTML = `PM`
+                hour = hour - 12
+            }
+            else {
+                session.innerHTML = `AM`
+            }
+
+            if (hour < 10) {
+                hour = '0' + hour
+            }
+            if (sec < 10) {
+                sec = `0` + sec
+            }
+            if (min < 10) {
+                min = `0` + min
+            }
+            hours.innerHTML = hour
+            minuts.innerHTML = min
+            seconds.innerHTML = sec
+        }
+
+        var b = document.querySelector(`body`)
+
+
+
+
+
+
+        icon.addEventListener(`click`, () => {
+            fetch(`https://api.openweathermap.org/data/2.5/weather?q=${inp.value}&units=metric&appid=a7cffca7c299e275d56fc2be97f4ad8b`).then(res => res.json()).then(data => mydata(data))
+            function mydata(data) {
+                console.log(data);
+                clock()
+                mydays()
+
+                city.innerText = data.name
+
+                temp.innerHTML = `<p>${data.main.temp} C <sup>o</sup></p>`
+                minMax.innerHTML = `<p>Min(${data.main.temp_min} C <sup>o</sup>)/Max(${data.main.temp_max} C <sup>o</sup>)</p>`
+                weather.innerText = data.weather[0].main
+                // console.log(data.weather[0].main);
+
+                var s = `Haze`
+
+                if (data.weather[0].main == s) {
+                
+                    
+                    
+                    b.setAttribute(`class`, `bg-[url(./cloudy.jpg)]`)
+
+
+                    
+
+                }
+
+            }
+
+
+        })
